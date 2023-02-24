@@ -5,6 +5,7 @@ on:
       - v*
 jobs:
   release:
+    permissions: write-all
     runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
