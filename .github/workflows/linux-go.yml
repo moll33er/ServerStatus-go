@@ -23,9 +23,10 @@ jobs:
 
     - name: Build
       run: |
-        go mod init ./client.go
+        pwd
+        go mod init client.go
         go mod tidy
-        go build -o linux ./client.go
+        go build -o linux client.go
 
     - name: Test
-      run: go test -v ./client.go
+      run: go test -v client.go
