@@ -1,4 +1,4 @@
-name: Release gocapture
+name: Release ServerStatus-go
 on:
   push:
     tags:
@@ -20,7 +20,7 @@ jobs:
           draft: false
           prerelease: false
   linuxbuild:
-    name: build gocapture
+    name: build ServerStatus-go
     needs: release
     runs-on: ubuntu-latest
     steps:
@@ -32,38 +32,16 @@ jobs:
         with:
           go-version: 1.17
       - name: build linux version
-        run: go build -o serverstatus -v ./...
+        run: go build -o ServerStatus-go -v ./...
       - name: package
-        run: tar -zcvf serverstatus_linux.tgz serverstatus static templates GeoLite2-City.mmdb
+        run: tar -zcvf ServerStatus_go_linux.tgz ServerStatus-go static templates GeoLite2-City.mmdb
       - name: upload
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: serverstatus_linux.tgz
-          asset_name: serverstatus_linux.tgz
+          asset_path: ServerStatus_go_linux.tgz
+          asset_name: ServerStatus_go_linux.tgz
           asset_content_type: application/gzip
 
-  windowsbuild:
-    runs-on: windows-latest
-    needs: release
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.17
-      - name: build windows version
-        run: go build -v -o serverstatus_windows.exe ./...
-      - name: package
-        run: tar -zcvf serverstatus_windows.tgz serverstatus_windows.exe static templates GeoLite2-City.mmdb
-      - name: upload
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: serverstatus_windows.tgz
-          asset_name: serverstatus_windows.tgz
-          asset_content_type: application/gzip
