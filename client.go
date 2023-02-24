@@ -9,8 +9,6 @@ import (
 	net2 "github.com/shirou/gopsutil/net"
 	"strings"
 	"regexp"
-	//"os/exec"
-	//"bytes"
 	"strconv"
 	"github.com/shirou/gopsutil/host"
 	"fmt"
@@ -83,10 +81,10 @@ func main() {
 		interval = "1"
 	}
 	// 获取vnstat执行路径
-	vnstat, err = cfg.GetValue("Status", "VNSTAT")
-	if nil != err {
-		log.Fatalf("Can not get vnstat exec path: %s\n", err.Error())
-	}
+	// vnstat, err = cfg.GetValue("Status", "VNSTAT")
+	// if nil != err {
+	// 	log.Fatalf("Can not get vnstat exec path: %s\n", err.Error())
+	// }
 	// 组合连接地址
 	addr := server + ":" + port
 	for {
@@ -340,9 +338,6 @@ func getTraffic() (uint64, uint64) {
                  strings.Contains(r[1], `kube`)){
             continue;
         } else {
-            // fmt.Println("result", i, " = ", r[1])
-            // fmt.Println("result", i, " = ", r[2])
-            // fmt.Println("result", i, " = ", r[10])
 			in, _ := strconv.ParseUint(r[2], 10, 64)
 			out, _ := strconv.ParseUint(r[10], 10, 64)
 			return in, out
@@ -351,33 +346,3 @@ func getTraffic() (uint64, uint64) {
 	return 0, 0
 }
 
-/*
-// 获取流量信息
-func getTraffic() (uint64, uint64) {
-	// 使用sh执行vnstat
-	cmd := exec.Command(vnstat, "--dumpdb")
-	// 执行结果输出变量
-	var out bytes.Buffer
-	// 设置输出
-	cmd.Stdout = &out
-	// 执行
-	err := cmd.Run()
-	if nil != err {
-		return 0, 0
-	}
-	// 循环执行结果
-	for _, line := range strings.Split(out.String(), "\n") {
-		// 仅获取月份统计
-		if "m;0;" == line[0:4] {
-			// 使用;分割
-			mdata := strings.Split(line, ";")
-			// 获取输入
-			in, _ := strconv.ParseUint(mdata[3], 10, 64)
-			// 获取输出
-			out, _ := strconv.ParseUint(mdata[4], 10, 64)
-			return in * 1024 * 1024, out * 1024 * 1024
-		}
-	}
-	return 0, 0
-}
-*/
