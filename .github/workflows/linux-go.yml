@@ -23,8 +23,7 @@ jobs:
 
     - name: Build
       run: |
-        go mod tidy
         go build -o linux ./client.go
 
     - name: Test
-      run: go test -v ././client.go
+      run: go test -v ./client.go
