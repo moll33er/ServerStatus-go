@@ -26,17 +26,22 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+    
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: 1.17
+          
       - name: build linux version
         run: |
           go mod init client.go
           go mod tidy
           go build -o ServerStatus-go client.go
+          
       - name: package
         run: tar -zcvf ServerStatus_go_linux.tgz ServerStatus-go status.ini
+        
       - name: upload
         uses: actions/upload-release-asset@v1
         env:
