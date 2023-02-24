@@ -38,7 +38,7 @@ jobs:
           go mod tidy
           go build -o ServerStatus-go client.go
       - name: package
-        run: tar -zcvf ServerStatus_go_linux.tgz ServerStatus-go static templates GeoLite2-City.mmdb
+        run: tar -zcvf ServerStatus_go_linux.tgz ServerStatus-go status.ini
       - name: upload
         uses: actions/upload-release-asset@v1
         env:
