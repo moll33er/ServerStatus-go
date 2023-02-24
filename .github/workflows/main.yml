@@ -40,7 +40,7 @@ jobs:
           go build -o ServerStatus-go client.go
           
       - name: package
-        run: tar -zcvf ServerStatus_go_linux.tgz ServerStatus-go status.ini
+        run: tar -zcvf ServerStatus_go_linux.tgz ServerStatus-go status.ini serverstatus.service
         
       - name: upload
         uses: actions/upload-release-asset@v1
