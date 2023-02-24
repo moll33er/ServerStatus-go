@@ -12,7 +12,7 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3
 
@@ -22,7 +22,10 @@ jobs:
         go-version: 1.19
 
     - name: Build
-      run: go build -o linux ./client.go
+      run: |
+        go mod init
+        go mod tidy
+        go build -o linux ./client.go
 
     - name: Test
       run: go test -v ././client.go
