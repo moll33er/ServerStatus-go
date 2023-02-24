@@ -1,0 +1,18 @@
+[Unit]
+Description=ServerStatus
+Documentation=https://github.com/moll33er/ServerStatus-go
+After=network.target nss-lookup.target
+
+[Service]
+Type=simple
+User=root
+#User=nobody
+#CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+WorkingDirectory=/root/tool/serverstatus
+ExecStart=/root/tool/serverstatus/ServerStatus-go
+Restart=on-failure
+RestartPreventExitStatus=23
+
+[Install]
+WantedBy=multi-user.target

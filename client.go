@@ -329,7 +329,7 @@ func getTraffic() (uint64, uint64) {
     }
     //根据规则提取关键信息
 	result1 := reg1.FindAllStringSubmatch(buf, -1)
-    fmt.Println("result1 = ", result1[0][1])
+    // fmt.Println("result1 = ", result1[0][1])
     // fmt.Println("result1 = ", result1[0][8])
     for _,r := range result1{
         if (r[1] == "lo" || strings.Contains(r[1], `tun`) || strings.Contains(r[1], `docker`) ||
