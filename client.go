@@ -8,8 +8,9 @@ import (
 	"time"
 	net2 "github.com/shirou/gopsutil/net"
 	"strings"
-	"os/exec"
-	"bytes"
+	"regexp"
+	//"os/exec"
+	//"bytes"
 	"strconv"
 	"github.com/shirou/gopsutil/host"
 	"fmt"
@@ -20,6 +21,8 @@ import (
 	"log"
 	"path/filepath"
 	"os"
+	"io/ioutil"
+
 )
 
 // 发送数据Json结构体
@@ -312,6 +315,43 @@ func getSpeed() (uint64, uint64) {
 	return rx2 - rx, tx2 - tx
 }
 
+func getTraffic() (uint64, uint64) {
+	file, err := os.Open("/proc/net/dev")
+   	if err != nil {
+    	panic(err)
+   	}
+	defer file.Close()
+   	content, err := ioutil.ReadAll(file)
+    buf := string(content)
+    //解析正则表达式，如果成功返回解释器
+    reg1 := regexp.MustCompile(`([^\s]+):[\s]{0,}(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)`)
+    if reg1 == nil { //解释失败，返回nil
+        fmt.Println("regexp err")
+        return 0, 0
+    }
+    //根据规则提取关键信息
+	result1 := reg1.FindAllStringSubmatch(buf, -1)
+    fmt.Println("result1 = ", result1[0][1])
+    // fmt.Println("result1 = ", result1[0][8])
+    for _,r := range result1{
+        if (r[1] == "lo" || strings.Contains(r[1], `tun`) || strings.Contains(r[1], `docker`) ||
+                 strings.Contains(r[1], `veth`) || strings.Contains(r[1], `br-`) ||
+                 strings.Contains(r[1], `vmbr`) || strings.Contains(r[1], `vnet`) ||
+                 strings.Contains(r[1], `kube`)){
+            continue;
+        } else {
+            // fmt.Println("result", i, " = ", r[1])
+            // fmt.Println("result", i, " = ", r[2])
+            // fmt.Println("result", i, " = ", r[10])
+			in, _ := strconv.ParseUint(r[2], 10, 64)
+			out, _ := strconv.ParseUint(r[10], 10, 64)
+			return in, out
+        }
+    }
+	return 0, 0
+}
+
+/*
 // 获取流量信息
 func getTraffic() (uint64, uint64) {
 	// 使用sh执行vnstat
@@ -340,3 +380,4 @@ func getTraffic() (uint64, uint64) {
 	}
 	return 0, 0
 }
+*/
