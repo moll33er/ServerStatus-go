@@ -40,9 +40,11 @@ jobs:
           go build -o ServerStatus-go client.go
           
       - name: package
-        run: tar -zcvf ServerStatus_go_linux.tgz ServerStatus-go status.ini serverstatus.service
+        run: |
+          tar -zcvf ServerStatus_go_linux_all.tgz ServerStatus-go status.ini serverstatus.service
+          tar -zcvf ServerStatus_go_linux.tgz ServerStatus-go
         
-      - name: upload
+      - name: upload ServerStatus_go_linux
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,5 +52,15 @@ jobs:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: ServerStatus_go_linux.tgz
           asset_name: ServerStatus_go_linux.tgz
+          asset_content_type: application/gzip
+        
+      - name: upload ServerStatus_go_linux_all
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ServerStatus_go_linux_all.tgz
+          asset_name: ServerStatus_go_linux_all.tgz
           asset_content_type: application/gzip
 
