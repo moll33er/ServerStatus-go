@@ -244,7 +244,7 @@ func getDisk() (uint64, uint64) {
 	for _, d := range ds {
 		//data, _ := json.MarshalIndent(d, "", "  ")
 		index := sort.SearchStrings(valid_fs, d.Fstype)
-		if index >= len(valid_fs) && valid_fs[index] != d.Fstype { //需要注意此处的判断，先判断 &&左侧的条件，如果不满足则结束此处判断，不会再进行右侧的判断
+		if index >= len(valid_fs) || valid_fs[index] != string(d.Fstype) { //需要注意此处的判断，先判断 &&左侧的条件，如果不满足则结束此处判断，不会再进行右侧的判断
 			continue
 		}
 		//log.Printf("type", string(data), valid_fs[0])
