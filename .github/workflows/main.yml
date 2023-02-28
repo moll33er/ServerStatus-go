@@ -41,7 +41,7 @@ jobs:
           
       - name: package
         run: |
-          tar -zcvf ServerStatus_go_linux_all.tgz ServerStatus-go status.ini serverstatus.service
+          tar -zcvf ServerStatus_go_linux_all.tgz ServerStatus-go status.ini serverstatus.service update.sh
           tar -zcvf ServerStatus_go_linux.tgz ServerStatus-go
         
       - name: upload ServerStatus_go_linux
