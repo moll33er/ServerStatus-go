@@ -20,7 +20,7 @@ import (
 	"path/filepath"
 	"os"
 	"io/ioutil"
-
+	"sort"
 )
 
 // 发送数据Json结构体
@@ -231,6 +231,8 @@ func getSwap() (uint64, uint64) {
 
 // 获取硬盘信息
 func getDisk() (uint64, uint64) {
+	valid_fs := []string{"ext4", "ext3", "ext2", "reiserfs", "jfs", "btrfs", "fuseblk", "zfs", "simfs", "ntfs", "fat32", "exfat","xfs"}
+	sort.Strings(valid_fs)
 	// 获取所有分区
 	ds, err := disk.Partitions(true)
 	if nil != err {
@@ -240,6 +242,12 @@ func getDisk() (uint64, uint64) {
 	var Total, Used uint64
 	// 循环所有分区
 	for _, d := range ds {
+		//data, _ := json.MarshalIndent(d, "", "  ")
+		index := sort.SearchStrings(valid_fs, d.Fstype)
+		if index >= len(valid_fs) && valid_fs[index] != d.Fstype { //需要注意此处的判断，先判断 &&左侧的条件，如果不满足则结束此处判断，不会再进行右侧的判断
+			continue
+		}
+		//log.Printf("type", string(data), valid_fs[0])
 		// 读取分区使用情况
 		Disk, err := disk.Usage(d.Mountpoint)
 		if nil != err {
