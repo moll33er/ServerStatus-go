@@ -4,6 +4,14 @@
 
 由于原版使用Python编写，在实际使用中会出现内存、硬盘、流量等统计不准确或无法统计情况，故此使用GoLang重新编写，可与原版服务端完美结合，无需更改。
 
+### 一键安装
+
+```shell
+wget -qO- --no-check-certificate https://raw.githubusercontent.com/moll33er/ServerStatus-go/master/install.sh | bash
+```
+
+
+
 ## 存在问题
 
 程序在Alpine下，获取Swap时不准确，获取到的大小都是15.98G，这个问题后期再改。

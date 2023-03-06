@@ -1,5 +1,13 @@
+#!/usr/bin/env bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+SKYBLUE='\033[0;36m'
+PLAIN='\033[0m'
+
 if [ `whoami` != 'root' ];then
-    echo "错误:请使用root权限运行当前脚本!" 1>&2
+    echo -e "${RED} 错误: ${PLAIN} 请使用root权限运行当前脚本! "
     exit 1
 fi
 
@@ -21,3 +29,5 @@ cp -f /root/tool/serverstatus/serverstatus.service /usr/lib/systemd/system/serve
 systemctl start serverstatus
 
 systemctl enable serverstatus
+
+echo -e "${GREEN} 安装成功! ${PLAIN}"
