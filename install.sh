@@ -26,6 +26,8 @@ chmod +x /root/tool/serverstatus/update.sh /root/tool/serverstatus/ServerStatus-
 
 cp -f /root/tool/serverstatus/serverstatus.service /usr/lib/systemd/system/serverstatus.service
 
+systemctl daemon-reload
+
 systemctl start serverstatus
 
 systemctl enable serverstatus
